@@ -1,6 +1,11 @@
 pico-8 cartridge // http://www.pico-8.com
 version 32
 __lua__
+---
+-- This is a cartridge showcasing the 'printv' functionality that can be 
+-- directly run using PICO-8.
+---
+
 -- Using the 'printv' function only requires that you #include
 -- the 'printv.p8' file in your cart.
 #include printv.p8
