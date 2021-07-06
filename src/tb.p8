@@ -1,10 +1,9 @@
 pico-8 cartridge // http://www.pico-8.com
 version 32
 __lua__
-#include printv.p8
 -- These variables are used internally and should not be modified.
 tb_next={}
-tb_default={bg=13,fg=7,txt=1,atBot=true,speed=2,delay=9}
+tb_default={bg=13,fg=7,txt=1,atBot=true,speed=4,delay=9}
 -- This function is used internally and should not be called directly.
 function tb_update()
     tb_close,tb_offset = false, #tb_box.str * 9
@@ -12,19 +11,22 @@ function tb_update()
     tb_fgBot,tb_mask = tb_bot - 1, tb_offset + 2
 
     for i=0,3 do yield() end
+
     while tb_mask > 1 do
         tb_mask -= 1
-        for i=1,tb_box.speed do yield() end
+        for i=1,tb_box.speed,2 do yield() end
     end
 
     for i=1,tb_box.delay do yield() end
-    tb_box.done = true
+    tb_done = true
+
     while not tb_close do tb_close = yield() end
+    for i=0,2 do yield() end
 end
 
 ---- 
 -- Queues up a text box for run_tb() to use.
--- @param str string: The string to be displayed in the textbox.
+-- @param str table: The strings to be displayed in the textbox.
 -- @param options table: A set of options that can be set for the textbox.
 function tb_queue(str, options)
     tb_newBox = options or {}
@@ -39,8 +41,8 @@ end
 ---
 -- Creates, runs, and cleans up the coroutine used to update textbox values.
 -- Should be included in _update().
--- @param tb_close boolean: Whether or not the box should be closed. This is
---          ignored if tb_box.done=false
+-- @param tb_close boolean: Whether the current text box should be closed. This
+--          is ignored if the current text has not been fully displayed.
 function tb_run(tb_close)
     if not tb_coroutine then
         if #tb_next > 0 then
@@ -51,7 +53,7 @@ function tb_run(tb_close)
         coresume(tb_coroutine, tb_close)
     else
         deli(tb_next, 1)
-        tb_box,tb_coroutine = nil,nil
+        tb_done,tb_box,tb_mask,tb_coroutine = false
     end
 end
 
@@ -62,22 +64,13 @@ function tb_draw()
         rectfill(0, tb_top, 128, tb_bot, tb_box.bg)
         rectfill(1, tb_top + 1, 124, tb_fgBot, tb_box.fg)
         for k,v in pairs(tb_box.str) do
-            printv(v,4, tb_top + k*9 - 6, tb_box.txt)
+            -- If desired, the 'printv' function can be swapped out
+            -- for the regular 'print' function, but this will require
+            -- changing the values used for the 'offset' in tb_update()
+            -- as well as here
+            printv(v, 4, tb_top + 3 + (k-1)*9, tb_box.txt)
         end
         if (tb_mask > 2) rectfill(1, tb_bot-tb_mask, 124, tb_fgBot, tb_box.fg)
-        if (tb_box.done) print(#tb_next > 1 and "…" or "❎", 117, tb_bot-5, tb_box.txt)
+        if (tb_done) print(#tb_next > 1 and "…" or "❎", 117, tb_bot-5, tb_box.txt)
     end
-end
-
-function _update()
-    if (btnp(5) and #tb_next < 1) then 
-        tb_queue(split("Hello, world;%it's nice to meet you!%:)","%"), {atBot=false,bg=9})
-        tb_queue{"How's the weather today?"}
-    end
-    tb_run(btnp(5))
-end
-
-function _draw()
-    cls()
-    tb_draw()
 end
