@@ -22,7 +22,7 @@ function _update()
     -- Next, include tb_run(x) in the main _update() function, where 'x' is 
     -- a value indicating that the current textbox should be closed. If there
     -- is another textbox that has been queued, that one will be displayed.
-    tb_run(btnp(5))
+    tb_run(btn(5))
 end
 
 function _draw()

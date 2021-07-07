@@ -6,9 +6,9 @@ tb_n={}
 tb_d={bg=13,fg=7,txt=1,atbot=true,speed=4}
 -- This function is used internally and should not be called directly.
 function tb_update()
- tb_close,tb_offset = false, #tb_box.str * 9
- tb_top,tb_bot = tb_box.atbot and 124 - tb_offset or 0, tb_box.atbot and 127 or tb_offset + 4
- tb_fbot,tb_mask = tb_bot - 1, tb_offset + 2
+ local tb_o,tb_c = #tb_box.str * 9
+ tb_top,tb_bot = tb_box.atbot and 124 - tb_o or 0, tb_box.atbot and 127 or tb_o + 4
+ tb_fbot,tb_mask = tb_bot - 1, tb_o + 2
 
  yield()yield()yield()
  while tb_mask > 1 do
@@ -19,7 +19,7 @@ function tb_update()
  for i=1,9 do yield() end
  tb_done = true
 
- while not tb_close do tb_close = yield() end
+ while not tb_c do tb_c = yield() end
  yield()yield()
 end
 
@@ -40,16 +40,16 @@ end
 ---
 -- Creates, runs, and cleans up the coroutine used to update textbox values.
 -- Should be included in _update().
--- @param tb_close boolean: Whether the current text box should be closed. This
+-- @param tb_c boolean: Whether the current text box should be closed. This
 --          is ignored if the current text has not been fully displayed.
-function tb_run(tb_close)
+function tb_run(tb_c)
  if not tb_cor then
   if #tb_n > 0 then
    tb_box,tb_cor = tb_n[1],cocreate(tb_update)
    coresume(tb_cor)
   end
  elseif costatus(tb_cor) != "dead" then
-  coresume(tb_cor, tb_close)
+  coresume(tb_cor, tb_c)
  else
   deli(tb_n, 1)
   tb_done,tb_box,tb_mask,tb_cor = false
@@ -63,7 +63,8 @@ function tb_draw()
   rectfill(0, tb_top, 128, tb_bot, tb_box.bg)
   rectfill(1, tb_top + 1, 124, tb_fbot, tb_box.fg)
   -- The 'printv()' call can be swapped out for 'print()', but doing so
-  -- will adjusting 'tb_offset' in 'tb_update' as well as the call below.
+  -- will need adjusting 'tb_o' in 'tb_update' as well as the y-value
+  -- in the call below.
   for k,v in pairs(tb_box.str) do
    printv(v, 4, tb_top + 3 + (k-1)*9, tb_box.txt)
   end
