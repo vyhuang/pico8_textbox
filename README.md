@@ -9,6 +9,7 @@ The PNG file used for the custom font can be found in 'resources/font.png'.
 NOTE: The font deliberately uses uppercase letters for characters 0x41-0x5a, and lowercase letters for 0x61-0x7a. Essentially, the case will be reversed from that seen in the PICO-8 editor itself, but should match the case used when editing a file in an external editor. If you wish to swap the cases back around, then you can edit 'font.png' and then load the 'font_snippet' generator written by zep. Then replace the first line of printv.p8 with the new snippet. Make sure to keep the positions of the symbols the same.
 
 The dimensions of the font are as follows:
+
 char_width=6
 char_width2=8
 char_height=9
@@ -27,13 +28,13 @@ The `test_printv.p8` and `test_tb.p8` files provide commented examples of how to
 
 The potential configuration options that can be passed into `queue_tb()` are
 as follows:
-- border-color:
+- bg:
     - The color to use for the border of the text box. Defaults to 13.
-- foreground-color:
+- fg:
     - The color to use for the foreground of the text box. Defaults to 7.
-- text-color:
+- txt:
     - The color to use for the text of the text box, as well as the continuation symbol shown when all text is visible. Defaults to 1.
-- at-bottom:
+- atbot:
     - Whether or not the text box is anchored to the bottom of the screen.
     If false, the text box will be anchored to the top of the screen. Defaults to true.
 - speed:
