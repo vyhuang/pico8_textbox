@@ -14,6 +14,7 @@ char_width2=8
 char_height=9
 
 I've made efforts to limit the amount of tokens used, but I've not fully minified the cartridges to reduce character count. As of 7/8/21, the INFO command from PICO-8 reads as follows:
+
 printv:
 - 126 tokens
 - 3311 characters
