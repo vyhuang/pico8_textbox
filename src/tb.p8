@@ -69,6 +69,6 @@ function tb_draw()
    printv(v, 4, tb_top + 3 + (k-1)*9, tb_box.txt)
   end
   if (tb_mask > 2) rectfill(1, tb_bot-tb_mask, 124, tb_fbot, tb_box.fg)
-  if (tb_done) print(#tb_n > 1 and "…" or "❎", 117, tb_bot-5, tb_box.txt)
+  if (tb_done) print(#tb_n > 1 and "…" or "◆", 117, tb_bot-5, tb_box.txt)
  end
 end
