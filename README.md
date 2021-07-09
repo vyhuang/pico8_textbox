@@ -6,7 +6,7 @@ The PNG file used for the custom font can be found in 'resources/font.png'.
 
 ![font.png - the image file used to generate the font snippet](/resources/font.png)
 
-NOTE: The font deliberately uses uppercase letters for characters 0x41-0x5a, and lowercase letters for 0x61-0x7a. Essentially, the case will be reversed from that seen in the PICO-8 editor itself, but should match the case used when editing a file in an external editor. If you wish to swap the cases back around, then you can edit 'font.png' and then load the 'font_snippet' generator written by zep. Then replace the first line of printv.p8 with the new snippet. Make sure to keep the positions of the symbols the same. This will also involve changing some of the code in print_v, which isn't documented at the moment... I'll come up with something for that later.
+NOTE: The font deliberately uses uppercase letters for characters 0x41-0x5a, and lowercase letters for 0x61-0x7a. Essentially, the case will be reversed from that seen in the PICO-8 editor itself, but should match the case used when editing a file in an external editor. If you wish to swap the cases back around, then `printv_alt.p8` should be used instead of `printv.p8`
 
 The dimensions of the font are as follows:
 
@@ -16,7 +16,7 @@ The dimensions of the font are as follows:
 
 I've made efforts to limit the amount of tokens used, but I've not fully minified the cartridges to reduce character count. As of 7/8/21, the INFO command from PICO-8 reads as follows:
 
-printv:
+printv.p8:
 - 126 tokens
 - 3311 characters
 
